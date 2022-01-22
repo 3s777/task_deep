@@ -5,7 +5,7 @@ function validate_input($input) {
 
 function get_user_by_email($email) {
     $db = new PDO('mysql:host=localhost;dbname=task_deep','root','');
-    $sql = "SELECT id FROM users WHERE email <=>:email";
+    $sql = "SELECT id,email,password FROM users WHERE email <=>:email";
     $statement = $db->prepare($sql);
     $statement->execute(['email' => $email]);
     $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -13,7 +13,10 @@ function get_user_by_email($email) {
 }
 
 function set_flash_message($name, $message) {
-    $_SESSION[$name] = $message;
+    $_SESSION['message'] = [
+        'name' => $name,
+        'message' => $message
+    ];
 }
 
 function redirect_to($path) {
@@ -27,10 +30,16 @@ function add_user($email, $password) {
     $result->execute(['email' => $email, 'password' => $password]);
 }
 
-function display_flash_message($name) {
-    if (isset($_SESSION[$name])) {
-        echo '<div class="alert alert-'.$name.' text-dark" role="alert">' . $_SESSION[$name] . '</div>';
-        unset($_SESSION[$name]);
+function display_flash_message() {
+    if (isset($_SESSION['message'])) {
+        echo '<div class="alert alert-'.$_SESSION['message']['name'].' text-dark" role="alert">' . $_SESSION['message']['message'] . '</div>';
+        unset($_SESSION['message']);
+    }
+}
+
+function is_logged_in() {
+    if(isset($_SESSION['auth']) && !empty($_SESSION['auth'])) {
+        return true;
     }
 }
 

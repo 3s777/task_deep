@@ -1,6 +1,9 @@
 <?php
     session_start();
     require 'functions.php';
+    if(is_logged_in()) {
+        redirect_to('/users.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +67,7 @@
                             <div class="col-xl-6 ml-auto mr-auto">
                                 <div class="card p-4 rounded-plus bg-faded">
 
-                                    <?php display_flash_message('danger'); ?>
+                                    <?php display_flash_message(); ?>
 
                                     <form id="js-login" novalidate="" action="register.php" method="POST">
                                         <div class="form-group">

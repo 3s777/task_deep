@@ -1,6 +1,9 @@
 <?php
-session_start();
-require 'functions.php';
+    session_start();
+    require 'functions.php';
+    if(is_logged_in()) {
+        redirect_to('/users.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,16 +41,16 @@ require 'functions.php';
         </div>
         <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
 
-            <?php display_flash_message('success'); ?>
+            <?php display_flash_message(); ?>
 
-            <form action="">
+            <form action="login.php" method="POST">
                 <div class="form-group">
                     <label class="form-label" for="username">Email</label>
-                    <input type="email" id="username" class="form-control" placeholder="Эл. адрес" value="">
+                    <input type="email" name="email" id="username" class="form-control" placeholder="Эл. адрес" value="">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="password">Пароль</label>
-                    <input type="password" id="password" class="form-control" placeholder="" >
+                    <input type="password" name="password" id="password" class="form-control" placeholder="" >
                 </div>
                 <div class="form-group text-left">
                     <div class="custom-control custom-checkbox">
