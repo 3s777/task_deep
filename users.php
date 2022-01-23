@@ -41,9 +41,9 @@
         </nav>
 
         <main id="js-page-content" role="main" class="page-content mt-3">
-            <div class="alert alert-success">
-                Профиль успешно обновлен.
-            </div>
+
+            <?php display_flash_message(); ?>
+
             <div class="subheader">
                 <h1 class="subheader-title">
                     <i class='subheader-icon fal fa-users'></i> Список пользователей
@@ -52,7 +52,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <?php if(check_role('admin')) { ?>
-                        <a class="btn btn-success" href="create_user.html">Добавить</a>
+                        <a class="btn btn-success" href="create_user.php">Добавить</a>
                     <?php }?>
 
 
@@ -77,11 +77,11 @@
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                             <div class="d-flex flex-row align-items-center">
                                 <span class="status status-success mr-3">
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url('img/demo/avatars/avatar-b.png'); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url('img/demo/avatars/<?php echo $user['avatar']; ?>'); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
                                     <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
-                                        Oliver Kopyov
+                                        <?php echo $user['username']; ?>
                                         <?php if(check_role('admin') || $_SESSION['auth']['id'] == $user['id']) { ?>
                                             <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
                                             <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
@@ -89,29 +89,29 @@
                                     </a>
                                     <?php if(check_role('admin') || $_SESSION['auth']['id'] == $user['id']) { ?>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="edit.html">
+                                            <a class="dropdown-item" href="edit.php?id=<?php echo $user['id']; ?>">
                                                 <i class="fa fa-edit"></i>
                                                 Редактировать
                                             </a>
-                                            <a class="dropdown-item" href="security.html">
+                                            <a class="dropdown-item" href="security.php?id=<?php echo $user['id']; ?>">
                                                 <i class="fa fa-lock"></i>
                                                 Безопасность
                                             </a>
-                                            <a class="dropdown-item" href="status.html">
+                                            <a class="dropdown-item" href="status.php?id=<?php echo $user['id']; ?>">
                                                 <i class="fa fa-sun"></i>
                                                 Установить статус
                                             </a>
-                                            <a class="dropdown-item" href="media.html">
+                                            <a class="dropdown-item" href="media.php?id=<?php echo $user['id']; ?>">
                                                 <i class="fa fa-camera"></i>
                                                 Загрузить аватар
                                             </a>
-                                            <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                            <a href="delete.php?id=<?php echo $user['id']; ?>" class="dropdown-item" onclick="return confirm('are you sure?');">
                                                 <i class="fa fa-window-close"></i>
                                                 Удалить
                                             </a>
                                         </div>
                                     <?php } ?>
-                                    <span class="text-truncate text-truncate-xl">IT Director, Gotbootstrap Inc.</span>
+                                    <span class="text-truncate text-truncate-xl"><?php echo $user['job']; ?></span>
                                 </div>
                                 <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
                                     <span class="collapsed-hidden">+</span>
@@ -122,19 +122,19 @@
                         <div class="card-body p-0 collapse show">
                             <div class="p-3">
                                 <a href="tel:+13174562564" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                    <i class="fas fa-mobile-alt text-muted mr-2"></i> +1 317-456-2564</a>
+                                    <i class="fas fa-mobile-alt text-muted mr-2"></i><?php echo $user['phone']; ?></a>
                                 <a href="mailto:oliver.kopyov@smartadminwebapp.com" class="mt-1 d-block fs-sm fw-400 text-dark">
                                     <i class="fas fa-mouse-pointer text-muted mr-2"></i> <?php echo $user['email']; ?></a>
                                 <address class="fs-sm fw-400 mt-4 text-muted">
-                                    <i class="fas fa-map-pin mr-2"></i> 15 Charist St, Detroit, MI, 48212, USA</address>
+                                    <i class="fas fa-map-pin mr-2"></i> <?php echo $user['address']; ?></address>
                                 <div class="d-flex flex-row">
-                                    <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#4680C2">
+                                    <a href="<?php echo $user['vk']; ?>" class="mr-2 fs-xxl" style="color:#4680C2">
                                         <i class="fab fa-vk"></i>
                                     </a>
-                                    <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#38A1F3">
+                                    <a href="<?php echo $user['telegram']; ?>" class="mr-2 fs-xxl" style="color:#38A1F3">
                                         <i class="fab fa-telegram"></i>
                                     </a>
-                                    <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#E1306C">
+                                    <a href="<?php echo $user['instagram']; ?>" class="mr-2 fs-xxl" style="color:#E1306C">
                                         <i class="fab fa-instagram"></i>
                                     </a>
                                 </div>
