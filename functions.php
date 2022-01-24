@@ -36,6 +36,23 @@ function get_all_users() {
     return $users;
 }
 
+function get_user_avatar_url($user_id) {
+    $db = db_connect();
+    $sql = "SELECT avatar FROM users WHERE id <=>:id";
+    $statement = $db->prepare($sql);
+    $statement->execute(['id' => $user_id]);
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    $avatar_path = 'img/demo/avatars/';
+    if(!empty($user['avatar'])) {
+        $path = $avatar_path.$user['avatar'];
+    } else {
+        $path = $avatar_path.'avatar-m.png';
+    }
+
+    return $path;
+}
+
 function set_flash_message($name, $message) {
     $_SESSION['message'] = [
         'name' => $name,
