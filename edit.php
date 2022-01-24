@@ -1,3 +1,19 @@
+<?php
+    session_start();
+    require 'functions.php';
+    if(!is_logged_in()) {
+        redirect_to('/page_login.php');
+    }
+
+    $id = validate_input($_GET["id"]);
+
+    if(!check_role('admin')) {
+        if(!is_author($id, $_SESSION['auth']['id'])) {
+            set_flash_message('danger', 'Можно редактировать только свой профиль');
+            redirect_to('/users.php');
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +54,7 @@
             </h1>
 
         </div>
-        <form action="">
+        <form action="/update_info.php" method="POST">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -46,30 +62,36 @@
                             <div class="panel-hdr">
                                 <h2>Общая информация</h2>
                             </div>
+                            <?php
+                                $user = get_user_by_id($id);
+                            ?>
                             <div class="panel-content">
                                 <!-- username -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Имя</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="Иван иванов">
+                                    <input type="text" name="username" id="simpleinput" class="form-control" value="<?php echo $user['username']; ?>">
                                 </div>
 
                                 <!-- title -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Место работы</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="Marlin Веб-разработчик">
+                                    <input type="text" name="job" id="simpleinput" class="form-control" value="<?php echo $user['job']; ?>">
                                 </div>
 
                                 <!-- tel -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Номер телефона</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="8 888 8888 88">
+                                    <input type="text" name="phone" id="simpleinput" class="form-control" value="<?php echo $user['phone']; ?>">
                                 </div>
 
                                 <!-- address -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Адрес</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="Восточные Королевства, Штормград">
+                                    <input type="text" name="address" id="simpleinput" class="form-control" value="<?php echo $user['address']; ?>">
                                 </div>
+
+                                <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                     <button class="btn btn-warning">Редактировать</button>
                                 </div>

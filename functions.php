@@ -17,6 +17,16 @@ function get_user_by_email($email) {
     return $user;
 }
 
+function get_user_by_id($id) {
+    $db = db_connect();
+    $sql = "SELECT * FROM users WHERE id <=>:id";
+    $statement = $db->prepare($sql);
+    $statement->execute(['id' => $id]);
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+    return $user;
+}
+
+
 function get_all_users() {
     $db = db_connect();
     $sql = "SELECT * FROM users";
@@ -47,7 +57,7 @@ function add_user($email, $password) {
 
 function edit_user_info($id, $username, $job, $phone, $address) {
     $db = db_connect();
-    $sql = "UPDATE users SET username=:username, job=:job, phone=:phone, address=:address, role='user' WHERE id=:id";
+    $sql = "UPDATE users SET username=:username, job=:job, phone=:phone, address=:address WHERE id=:id";
     $result = $db->prepare($sql);
     $result->execute(['username' => $username, 'job' => $job, 'phone' => $phone, 'address' => $address, 'id' => $id]);
 }
@@ -112,6 +122,12 @@ function is_logged_in() {
 
 function check_role($role) {
     if($_SESSION['auth']['role'] == $role) {
+        return true;
+    }
+}
+
+function is_author($auth_user_id, $edit_user_id) {
+    if($auth_user_id == $edit_user_id) {
         return true;
     }
 }
