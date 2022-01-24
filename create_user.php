@@ -110,9 +110,15 @@
                                 <div class="form-group">
                                     <label class="form-label" for="example-select">Выберите статус</label>
                                     <select class="form-control" name="status" id="example-select">
-                                        <option value="Онлайн">Онлайн</option>
-                                        <option value="Отошел">Отошел</option>
-                                        <option value="Не беспокоить">Не беспокоить</option>
+                                        <?php
+                                            $statuses = [
+                                                'online' => 'Онлайн',
+                                                'offline' => 'Оффлайн',
+                                                'busy' => 'Не беспокоить'
+                                            ];
+                                            foreach($statuses as $key => $value) { ?>
+                                                <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
 

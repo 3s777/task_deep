@@ -1,3 +1,19 @@
+<?php
+session_start();
+require 'functions.php';
+if(!is_logged_in()) {
+    redirect_to('/page_login.php');
+}
+
+$id = validate_input($_GET["id"]);
+
+if(!check_role('admin')) {
+    if(!is_author($id, $_SESSION['auth']['id'])) {
+        set_flash_message('danger', 'Можно редактировать только свой профиль');
+        redirect_to('/users.php');
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/users.php">Главная <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -26,7 +42,7 @@
                     <a class="nav-link" href="page_login.php">Войти</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Выйти</a>
+                    <a class="nav-link" href="/logout.php">Выйти</a>
                 </li>
             </ul>
         </div>
@@ -38,7 +54,7 @@
             </h1>
 
         </div>
-        <form action="">
+        <form action="/update_status.php" method="POST">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -52,11 +68,20 @@
                                         <!-- status -->
                                         <div class="form-group">
                                             <label class="form-label" for="example-select">Выберите статус</label>
-                                            <select class="form-control" id="example-select">
-                                                <option>Онлайн</option>
-                                                <option>Отошел</option>
-                                                <option>Не беспокоить</option>
+                                            <select class="form-control" name="status" id="example-select">
+                                                <?php
+                                                    $user = get_user_by_id($id);
+                                                    $statuses = [
+                                                            'online' => 'Онлайн',
+                                                            'offline' => 'Оффлайн',
+                                                            'busy' => 'Не беспокоить'
+                                                        ];
+                                                    foreach($statuses as $key => $value) { ?>
+                                                    <option value="<?php echo $key; ?>" <?php if($user['status'] == $key) { echo 'selected'; } ?>><?php echo $value; ?></option>
+                                                <?php } ?>
                                             </select>
+
+                                            <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-12 mt-3 d-flex flex-row-reverse">
