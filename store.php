@@ -28,6 +28,4 @@ if(!empty($user)) {
     upload_user_avatar($user_id, $avatar);
     redirect_to('/users.php');
 }
-
-exit();
 ?>

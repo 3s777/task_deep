@@ -1,3 +1,19 @@
+<?php
+    session_start();
+    require 'functions.php';
+    if(!is_logged_in()) {
+        redirect_to('/page_login.php');
+    }
+
+    $id = validate_input($_GET["id"]);
+
+    if(!check_role('admin')) {
+        if(!is_author($id, $_SESSION['auth']['id'])) {
+            set_flash_message('danger', 'Можно редактировать только свой профиль');
+            redirect_to('/users.php');
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/users.php">Главная <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -26,7 +42,7 @@
                     <a class="nav-link" href="page_login.php">Войти</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Выйти</a>
+                    <a class="nav-link" href="/logout.php">Выйти</a>
                 </li>
             </ul>
         </div>
@@ -38,7 +54,10 @@
             </h1>
 
         </div>
-        <form action="">
+
+        <?php display_flash_message(); ?>
+
+        <form action="/update_credentials.php" method="POST">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -46,25 +65,29 @@
                             <div class="panel-hdr">
                                 <h2>Обновление эл. адреса и пароля</h2>
                             </div>
+                            <?php
+                                $user = get_user_by_id($id);
+                            ?>
                             <div class="panel-content">
                                 <!-- email -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Email</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="john@example.com">
+                                    <input type="text" name="email" id="simpleinput" class="form-control" value="<?php echo $user['email']; ?>">
                                 </div>
 
                                 <!-- password -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Пароль</label>
-                                    <input type="password" id="simpleinput" class="form-control">
+                                    <input type="password" name="password" id="simpleinput" class="form-control">
                                 </div>
 
                                 <!-- password confirmation-->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Подтверждение пароля</label>
-                                    <input type="password" id="simpleinput" class="form-control">
+                                    <input type="password" name="confirm_password" id="simpleinput" class="form-control">
                                 </div>
 
+                                <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
 
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                     <button class="btn btn-warning">Изменить</button>

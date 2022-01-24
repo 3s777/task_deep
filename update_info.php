@@ -25,6 +25,4 @@ if(empty($user)) {
     edit_user_info($id, $username, $job, $phone, $address);
     redirect_to('/users.php');
 }
-
-exit();
 ?>

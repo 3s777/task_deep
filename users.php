@@ -3,6 +3,7 @@
     require 'functions.php';
     if(!is_logged_in()) {
         redirect_to('/page_login.php');
+        exit;
     }
 ?>
 <!DOCTYPE html>

@@ -28,7 +28,7 @@ $id = validate_input($_GET["id"]);
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item ">
-                        <a class="nav-link" href="#">Главная</a>
+                        <a class="nav-link" href="/users.php">Главная</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
@@ -36,7 +36,7 @@ $id = validate_input($_GET["id"]);
                         <a class="nav-link" href="#">Войти</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Выйти</a>
+                        <a class="nav-link" href="/logout.php">Выйти</a>
                     </li>
                 </ul>
             </div>
@@ -47,6 +47,9 @@ $id = validate_input($_GET["id"]);
                     <i class='subheader-icon fal fa-user'></i> Иван Иванов
                 </h1>
             </div>
+
+            <?php display_flash_message(); ?>
+
             <div class="row">
               <div class="col-lg-6 col-xl-6 m-auto">
                   <?php

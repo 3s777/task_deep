@@ -62,6 +62,7 @@ function set_flash_message($name, $message) {
 
 function redirect_to($path) {
     header("Location: $path");
+    exit();
 }
 
 function add_user($email, $password) {
@@ -77,6 +78,26 @@ function edit_user_info($id, $username, $job, $phone, $address) {
     $sql = "UPDATE users SET username=:username, job=:job, phone=:phone, address=:address WHERE id=:id";
     $result = $db->prepare($sql);
     $result->execute(['username' => $username, 'job' => $job, 'phone' => $phone, 'address' => $address, 'id' => $id]);
+}
+
+function edit_credentials($id, $email, $password) {
+    $db = db_connect();
+
+    if(empty($password)) {
+        $sql = "UPDATE users SET email=:email WHERE id=:id";
+        $statement = $db->prepare($sql);
+        $statement->bindValue('email', $email);
+        $statement->bindValue('id', $id);
+    } else {
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "UPDATE users SET email=:email, password=:password WHERE id=:id";
+        $statement = $db->prepare($sql);
+        $statement->bindValue('email', $email);
+        $statement->bindValue('password', $password);
+        $statement->bindValue('id', $id);
+    }
+
+    $statement->execute();
 }
 
 function set_user_status($id, $status) {

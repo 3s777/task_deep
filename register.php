@@ -15,6 +15,4 @@ if(!empty($user)) {
     add_user($email, $password);
     redirect_to('/page_login.php');
 }
-
-exit();
 ?>
