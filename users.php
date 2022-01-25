@@ -3,7 +3,6 @@
     require 'functions.php';
     if(!is_logged_in()) {
         redirect_to('/page_login.php');
-        exit;
     }
 ?>
 <!DOCTYPE html>
@@ -77,7 +76,7 @@
                     <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="oliver kopyov">
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                             <div class="d-flex flex-row align-items-center">
-                                <span class="status status-success mr-3">
+                                <span class="status status-<?php echo set_status_icon($user['status']); ?> mr-3">
                                     <span class="rounded-circle profile-image d-block " style="background-image:url('<?php echo get_user_avatar_url($user['id']); ?>'); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">

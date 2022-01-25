@@ -107,6 +107,21 @@ function set_user_status($id, $status) {
     $result->execute(['status' => $status, 'id' => $id]);
 }
 
+function set_status_icon($status) {
+    switch ($status) {
+        case 'online':
+            $icon = 'success';
+            break;
+        case 'busy':
+            $icon = 'danger';
+            break;
+        default:
+            $icon = 'secondary';
+            break;
+    }
+    return $icon;
+}
+
 function check_and_delete_user_avatar($id) {
     $db = db_connect();
     $sql = "SELECT avatar FROM users WHERE id =:id";

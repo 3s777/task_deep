@@ -3,7 +3,7 @@ session_start();
 require 'functions.php';
 
 $id = validate_input($_POST["id"]);
-$status = validate_input($_POST["status"]);
+$avatar = $_FILES['avatar'];
 
 if(!check_role('admin')) {
     if(!is_author($id, $_SESSION['auth']['id'])) {
@@ -19,7 +19,7 @@ if(empty($user)) {
     redirect_to('/users.php');
 } else {
     set_flash_message('success', 'Статус успешно отредактирован.');
-    set_user_status($id, $status);
+    upload_user_avatar($id, $avatar);
     redirect_to('/page_profile.php?id='.$id);
 }
 ?>
