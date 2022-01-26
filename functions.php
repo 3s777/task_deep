@@ -51,6 +51,20 @@ function get_user_by_id($id) {
 
 /**
     Parameters:
+    $user array
+    Description: авторизуем пользователя
+    Return value: null
+ **/
+function login($user) {
+    $_SESSION['auth'] = [
+        'id' => $user['id'],
+        'email' => $user['email'],
+        'role' => $user['role'],
+    ];
+}
+
+/**
+    Parameters:
     Description: получаем всех пользователей
     Return value: array
  **/
